@@ -1,0 +1,1 @@
+CREATE DATABASE wiki_fetch_dev;
