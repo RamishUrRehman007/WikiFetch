@@ -1,4 +1,4 @@
-# WikiFetch
+# WikiFetch 📚
 
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-CC2927?style=for-the-badge&logo=sqlalchemy)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql)
@@ -7,11 +7,11 @@
 
 WikiFetch is a powerful application designed to fetch articles from Wikipedia, process the data, and integrate it into an application. Leveraging the capabilities of FastAPI, SQLAlchemy, PostgreSQL, and Docker, WikiFetch facilitates the retrieval and management of information, making it easily accessible and manageable for further application use.
 
-## Project Overview
+## 📐 Project Overview
 
 WikiFetch utilizes a combination of advanced technologies to streamline the process of fetching, processing, and storing articles from Wikipedia. By harnessing the power of these technologies, the application ensures efficient data handling and robust database management, catering to the needs of developers and content managers alike.
 
-## Technologies
+## 🚀 Getting Started
 
 - **SQLAlchemy**: A Python SQL toolkit and Object Relational Mapper that provides full power and flexibility of SQL.
 - **PostgreSQL**: An advanced object-relational database management system emphasizing extensibility and standards compliance.
@@ -78,3 +78,12 @@ Run "python -m unittest test_filter_articles.py" in same Docker Container to che
 docker exec -it wiki_fetch-api bash
 python -m unittest wiki_fetch/test_filter_articles.py
 ```
+
+### Basic UI Demo
+
+Please note, the UI demo is built using very simple HTML, JavaScript, and CSS. It serves to showcase the working of the endpoints. However, it is not recommended for production use due to its basic nature. This demo was created to provide a quick visual representation and should be considered as a basic implementation example.
+
+
+![all articles ui](images/all_articles_ui.PNG)
+![rticles ui](images/article_ui.PNG)
+
