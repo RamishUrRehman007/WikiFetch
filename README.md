@@ -11,14 +11,14 @@ WikiFetch is a powerful application designed to fetch articles from Wikipedia, p
 
 WikiFetch utilizes a combination of advanced technologies to streamline the process of fetching, processing, and storing articles from Wikipedia. By harnessing the power of these technologies, the application ensures efficient data handling and robust database management, catering to the needs of developers and content managers alike.
 
-## 🚀 Getting Started
+## 💻 Technologies
 
 - **SQLAlchemy**: A Python SQL toolkit and Object Relational Mapper that provides full power and flexibility of SQL.
 - **PostgreSQL**: An advanced object-relational database management system emphasizing extensibility and standards compliance.
 - **Docker**: A platform used for developing, deploying, and running applications using containerization technology.
 - **FastAPI**: A modern, fast (high-performance) web framework for building APIs with Python 3.7+ based on standard Python type hints.
 
-## Getting Started
+## 🚀 Getting Started
 
 Follow these steps to get WikiFetch up and running on your local machine.
 
