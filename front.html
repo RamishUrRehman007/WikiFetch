@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Viewer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>Articles</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="articleTable">
+                <!-- Articles will be loaded here -->
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <!-- Pagination will be loaded here -->
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Modal -->
+    <div id="articleModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h4 id="modalTitle"></h4>
+            <p id="modalExtract"></p>
+            <img id="modalImage" src="" alt="Thumbnail" style="width: 10%;height:10%;">
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        const baseUrl = 'http://localhost:10000/v1/articles';
+        let allArticles = [];
+        const itemsPerPage = 8;
+        let currentPage = 1;
+
+        async function fetchAllArticles() {
+            const response = await fetch(`${baseUrl}`);
+            const data = await response.json();
+            allArticles = data.results;
+            displayArticles(currentPage);
+        }
+
+        function displayArticles(page) {
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedItems = allArticles.slice(start, end);
+
+            const table = document.getElementById('articleTable');
+            table.innerHTML = '';
+            paginatedItems.forEach(article => {
+                const row = `<tr>
+                                <td>${article.title}</td>
+                                <td><button class="btn btn-primary view-btn" data-id="${article.page_id}">View</button></td>
+                             </tr>`;
+                table.innerHTML += row;
+            });
+
+            // Attach event listeners to "View" buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    fetchArticleDetails(this.getAttribute('data-id'));
+                });
+            });
+
+            setupPagination(allArticles.length, page);
+        }
+
+        function setupPagination(totalItems, currentPage) {
+            const pageCount = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.querySelector('.pagination');
+            pagination.innerHTML = '';
+            for (let i = 1; i <= pageCount; i++) {
+                const pageItem = `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                                    <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                                  </li>`;
+                pagination.innerHTML += pageItem;
+            }
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayArticles(page);
+        }
+
+        async function fetchArticleDetails(pageId) {
+            // Fetch the article details from the API
+            const response = await fetch(`${baseUrl}/${pageId}`);
+            const article = await response.json();
+
+            // Populate the modal with the article details
+            // Use innerHTML for fields that contain HTML content to parse HTML tags
+            document.getElementById('modalTitle').innerHTML = article.title;
+            document.getElementById('modalExtract').innerHTML = article.article_extract;
+            document.getElementById('modalImage').src = "https:"+article.thumbnail_image_url;
+
+            // Show the modal
+            const modal = document.getElementById('articleModal');
+            modal.style.display = "block";
+
+            // Close the modal when the close button is clicked
+            document.querySelector('.close').onclick = function () {
+                modal.style.display = "none";
+            }
+
+            // Close the modal when anywhere outside of the modal is clicked
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        fetchAllArticles();
+    </script>
+</body>
+
+</html>
